@@ -1592,8 +1592,8 @@ Para comprobarlo, solo tenemos que cambiar el **return** de **following** a **fo
             follows,
             total,
             pages: Math.ceil(total / items_page),
-            user: followUserIds.following,
-            userF_me: followUserIds.followers
+            following: followUserIds.following,
+            followers: followUserIds.followers
         })
 
 Y en ***Postman*** veremos el resultado con el **id** del usuario que nos sigue.
@@ -1748,8 +1748,8 @@ Ahora nos tocaría hacer el **find** para el total de **follows** y el de los us
                 follows,
                 total,
                 pages: Math.ceil(total / items_page),
-                user: followUserIds.following_clean,
-                userF_me: followUserIds.followers_clean
+                following: followUserIds.following,
+                followers: followUserIds.followers
             })
         }).catch((err) => {
             return res.status(500).send({
