@@ -126,7 +126,7 @@ const user = (req, res) => {
     // Controlar la pagina
     let page = 1
     if (req.params.page) page = req.params.page
-    const items_page = 2
+    const items_page = 5
 
     // Guardar el total de publicaciones
     Publication.find({ user: userId })

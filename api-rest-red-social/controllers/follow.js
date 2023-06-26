@@ -99,7 +99,7 @@ const following = (req, res) => {
     if (req.params.page) page = req.params.page
 
     // Establecer el número de usuarios que vamos a mostrar por pagina
-    const items_page = 2
+    const items_page = 5
 
     // Total de follows
     Follow.find()
@@ -121,8 +121,8 @@ const following = (req, res) => {
                 follows,
                 total,
                 pages: Math.ceil(total / items_page),
-                user: followUserIds.following_clean,
-                userF_me: followUserIds.followers_clean
+                following: followUserIds.following,
+                followers: followUserIds.followers
             })
         }).catch((err) => {
             return res.status(500).send({
@@ -147,7 +147,7 @@ const followers = (req, res) => {
     if (req.params.page) page = req.params.page
 
     // Establecer el número de usuarios que vamos a mostrar por pagina
-    const items_page = 2
+    const items_page = 5
 
     // Total de follows
     Follow.find()
@@ -169,8 +169,8 @@ const followers = (req, res) => {
                 follows,
                 total,
                 pages: Math.ceil(total / items_page),
-                user: followUserIds.following_clean,
-                userF_me: followUserIds.followers_clean
+                following: followUserIds.following,
+                followers: followUserIds.followers
             })
         }).catch((err) => {
             return res.status(500).send({

@@ -12,6 +12,7 @@ const Publication = require('../models/publication')
 // Importar servicios
 const jwt = require('../services/jwt')
 const followService = require('../services/followService')
+// const validate = require('../helpers/validate')
 
 // Acciones de prueba
 const pruebaUser = (req, res) => {
@@ -34,6 +35,9 @@ const register = (req, res) => {
         })
     }
 
+    // Validación
+    // validate(params)
+
     // Control usuarios duplicados
     // Si un email o un nick existe en user_to_save, el usuario ya está registrado.
     // exec para ejecutar, tiene un callback con error y el objeto devuelto
@@ -46,7 +50,7 @@ const register = (req, res) => {
     }).then(async (users) => {
         if (users && users.length >= 1) {
             return res.status(200).send({
-                status: 'success',
+                status: 'error',
                 message: 'El usuario ya existe'
             })
         }
@@ -182,7 +186,7 @@ const list = (req, res) => {
     page = parseInt(page)
 
     // Consulta con mongoose paginate
-    let itemsPage = 2
+    let itemsPage = 5
     let total = 0
 
     User.find()
@@ -208,8 +212,8 @@ const list = (req, res) => {
                 itemsPage,
                 total,
                 pages: Math.ceil(total / itemsPage),
-                user: followUserIds.following_clean,
-                userF_me: followUserIds.followers_clean
+                following: followUserIds.following,
+                followers: followUserIds.followers
             })
 
         }))
@@ -249,7 +253,7 @@ const update = (req, res) => {
 
         if (userIsset) {
             return res.status(200).send({
-                status: 'success',
+                status: 'error',
                 message: 'El usuario ya existe'
             })
         }
@@ -264,8 +268,8 @@ const update = (req, res) => {
 
         // Buscar y actualizar datos
         User.findByIdAndUpdate(userData.id, userUpdate, { new: true })
-            .then((userUpdated => {
-                if (!userUpdated) {
+            .then((user => {
+                if (!user) {
                     return res.status(404).json({
                         status: 'error',
                         message: 'Error usuario no encontrado',
@@ -274,9 +278,9 @@ const update = (req, res) => {
 
                 // Respuesta correcta
                 return res.status(200).send({
-                    status: 'Succes',
+                    status: 'success',
                     message: 'Usuario Actualizado Correctamente',
-                    userUpdated
+                    user
                 })
 
             })).catch(error => {
@@ -345,7 +349,8 @@ const upload = (req, res) => {
         })).catch(error => {
             return res.status(500).send({
                 status: 'error',
-                message: 'Error al guardar imagen'
+                message: 'Error al guardar imagen',
+                error
             })
         })
 }
